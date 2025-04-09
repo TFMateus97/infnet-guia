@@ -1,0 +1,34 @@
+name: Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar pnpm
+        run: npm install -g pnpm
+
+      - name: Instalar dependências
+        run: pnpm install
+
+      - name: Construir a imagem Docker
+        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/infnet-guia:latest .
+
+      - name: Login no Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login --username ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Realizar deploy (Push da imagem)
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/infnet-guia:latest
