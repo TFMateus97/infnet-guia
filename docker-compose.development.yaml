@@ -1,17 +1,20 @@
 version: '3.8'
 services:
-  app:
+  app-development:
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: "infnet-guia-website"
+      target: development
+    container_name: "infnet-guia-website-development"
     stdin_open: true
     ports:
       - 3000:3000
+    volumes:
+      - ./:/app
   database:
     extends:
       file: docker-compose.database.yaml
-      service: database
+      service: database      
 volumes:
-  mysql_data:       
+  mysql_data: 
