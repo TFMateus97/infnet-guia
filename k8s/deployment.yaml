@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guia-infnet
+  namespace: app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: guia-infnet
+  template:
+    metadata:
+      labels:
+        app: guia-infnet
+    spec:
+      containers:
+        - name: guia-infnet
+          image: tfmateus97/infnet-guia:latest
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
