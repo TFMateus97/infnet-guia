@@ -17,7 +17,7 @@ spec:
         - name: grafana
           image: grafana/grafana:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 6000
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana
