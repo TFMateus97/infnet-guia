@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import client from 'prom-client';
 
-// Coleta as métricas padrão (tempo de processo, memória etc.)
 client.collectDefaultMetrics();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
