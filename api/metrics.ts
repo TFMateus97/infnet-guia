@@ -1,10 +1,24 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import client from 'prom-client';
 
-client.collectDefaultMetrics();
+const registry = new client.Registry();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.setHeader('Content-Type', client.register.contentType);
-  const metrics = await client.register.metrics();
-  res.status(200).send(metrics);
+client.collectDefaultMetrics({ register: registry });
+
+export const httpRequestCounter = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Número total de requisições HTTP recebidas',
+  labelNames: ['method', 'route'],
+});
+
+registry.registerMetric(httpRequestCounter);
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+
+  httpRequestCounter.inc({ method: req.method, route: '/metric' });
+  res.setHeader('Content-Type', registry.contentType);
+  res.end(await registry.metrics());
 }
