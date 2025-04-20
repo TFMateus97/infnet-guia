@@ -32,3 +32,4 @@ COPY --from=install /app/package.json ./package.json
 USER nextjs
 EXPOSE 3000
 CMD ["pnpm", "start"]
+

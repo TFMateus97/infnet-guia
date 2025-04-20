@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guia-app
+  namespace: app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: guia-app
+  template:
+    metadata:
+      labels:
+        app: guia-app
+    spec:
+      containers:
+        - name: guia-app
+          image: raphaeltorresinfnet/infnet-guia:latest
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /api/health-check
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15

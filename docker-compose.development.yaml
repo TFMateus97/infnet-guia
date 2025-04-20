@@ -17,4 +17,5 @@ services:
       file: docker-compose.database.yaml
       service: database      
 volumes:
-  mysql_data: 
+  mysql_data:       
+  
