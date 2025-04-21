@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: monitoring
 spec:
   replicas: 1
   selector:
@@ -16,9 +15,6 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:latest
-          args:
-            - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.path=/prometheus"
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -27,4 +23,7 @@ spec:
       volumes:
         - name: prometheus-storage
           persistentVolumeClaim:
-            claimName: prometheus-data
+            claimName: prometheus-data 
+        - name: prometheus-config
+          configMap:
+            name: prometheus-config

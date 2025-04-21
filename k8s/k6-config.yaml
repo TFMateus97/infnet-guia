@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-stress-test
+data:
+  stress-test.js: |
+    import http from 'k6/http';
+    import { check, sleep } from 'k6';
+
+    export let options = {
+      vus: 1000, // Número de usuários virtuais simultâneos
+      duration: '15s', // Duração do teste
+    };
+
+    export default function () {
+      const res = http.get('http://guia-infnet-service.default.svc.cluster.local:3000');
+      check(res, {
+        'status é 200': (r) => r.status === 200,
+      });
+      sleep(1);
+    }
