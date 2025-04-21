@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: guia-infnet
-  namespace: app
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port: "3000"
@@ -24,7 +23,7 @@ spec:
             - containerPort: 3000
           livenessProbe:
             httpGet:
-              path: /api/heath-check
+              path: /api/health-check
               port: 3000
             initialDelaySeconds: 15
             periodSeconds: 20
