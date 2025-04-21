@@ -11,6 +11,4 @@ data:
         metrics_path: '/api/metrics'
         static_configs:
           - targets: ['guia-infnet-service:3000']
-      - job_name: 'prometheus'
-        static_configs:
-          - targets: ['localhost:9090']
+     
